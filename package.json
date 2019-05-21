@@ -1,0 +1,21 @@
+{
+  "name": "prognosticator",
+  "version": "1.0.0",
+  "description": "----------------------",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": { },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/pchq/prognosticator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/pchq/prognosticator/issues"
+  },
+  "homepage": "https://gitlab.com/pchq/prognosticator#readme"
+}

@@ -7,3 +7,10 @@
 /.psc*
 /.purs*
 /.psa*
+/.spago*
+/.env
+/.cache
+
+
+/static/app.js
+docker_db.log

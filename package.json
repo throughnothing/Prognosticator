@@ -1,21 +1,23 @@
 {
   "name": "prognosticator",
   "version": "1.0.0",
-  "description": "----------------------",
+  "description": "Predict the future™",
   "main": "index.js",
-  "dependencies": {},
-  "devDependencies": { },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
+    "sqlite3": "^4.0.8"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/pchq/prognosticator.git"
+  "devDependencies": {
+    "db-migrate": "^0.11.5",
+    "db-migrate-pg": "^0.5.1",
+    "parcel": "^1.12.3",
+    "spago": "^0.8.0"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/pchq/prognosticator/issues"
-  },
-  "homepage": "https://gitlab.com/pchq/prognosticator#readme"
+  "scripts": {},
+  "author": "William Wolf <throughnothing@gmail.com>",
+  "license": "ISC"
 }

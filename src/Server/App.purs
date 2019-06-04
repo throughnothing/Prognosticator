@@ -112,7 +112,7 @@ authEnforcer = do
     then CE.next
     else CE.redirect $ routeStr Login
   where
-    allowedPaths = [routeStr GoogleAuth, routeStr GoogleCb]
+    allowedPaths = [routeStr GoogleAuth, routeStr GoogleCb, routeStr Login]
 
 -- | Helper to get the DBUser from the session in a route
 getUser :: ∀ m

@@ -29,6 +29,10 @@ if you don't have it already.
 You will also want a PostgreSQL server available, the below
 suggests using docker, with the provided docker helper script.
 
+Finally, currently Prognosticator only supports sign-in with Google,
+so you will need to have a Google AppID setup in your `.env` for
+login and authentication to work.
+
 ```
 # To run the server, and postgres server,
 # you will need the proper environment

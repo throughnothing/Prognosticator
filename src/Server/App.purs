@@ -31,7 +31,6 @@ data ServerRoutes
   = Login
   | GoogleAuth
   | GoogleCb
-  | Style
   | AppJS
   | Root
   | Query
@@ -41,7 +40,6 @@ routeStr :: ServerRoutes -> String
 routeStr Login = "/login"
 routeStr GoogleAuth = "/auth/google"
 routeStr GoogleCb = "/auth/google/callback"
-routeStr Style = "/style.css"
 routeStr AppJS = "/app.js"
 routeStr Root = "/"
 routeStr Query = "/query"
@@ -79,7 +77,6 @@ app repo c = do
   -- | Route for querying data (API route)
   post (routeStr Query) $ queryHandler repo
   get (routeStr AppJS) $ CE.sendFile "static/app.js"
-  get (routeStr Style) $ CE.sendFile "static/style.css"
   get (routeStr Login) $ CE.sendFile "static/login.html"
   -- | All routes serve index.html for pushstate goodness
   get (routeStr Else) $ CE.sendFile "static/index.html"

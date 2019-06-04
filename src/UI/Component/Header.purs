@@ -41,9 +41,10 @@ component =
       [ HH.div
         [ class_ "container" ]
         [ HH.a
-          [ class_ "navbar-brand pointer"
+          [ class_ "navbar-brand"
           , voidHref
           , HE.onClick $ _go R.Home 
+          , voidHref
           ]
           [ HH.text "Prognosticator" ]
         , HH.ul
@@ -65,10 +66,11 @@ component =
   _navItem action enabled active name = HH.li
     [ class_ "nav-item"]
     [ HH.a
-      [ class_ $ "nav-link pointer"
+      [ class_ $ "nav-link"
           <> (if active then " active" else "")
           <> (if not enabled then " disabled" else "")
       , HE.onClick $ \_ -> Just action
+      , voidHref
       ]
       [ HH.text name ]
     ]

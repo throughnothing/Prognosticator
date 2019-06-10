@@ -29,6 +29,7 @@ You can edit this file as you like.
     , "ordered-collections"
     , "prelude"
     , "psci-support"
+    , "refs"
     , "routing"
     , "simple-json"
     , "strings"

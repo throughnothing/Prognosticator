@@ -40,15 +40,14 @@ component :: forall q o m
   => H.Component HH.HTML q Input o m
 component =
   H.mkComponent
-    { initialState: initialState
+    { initialState
     , render
     , eval: H.mkEval $ H.defaultEval
       { handleAction = handleAction }
     }
   where
-
   initialState :: Input -> State
-  initialState { me, question }= 
+  initialState { me, question } = 
     { me
     , question
     }

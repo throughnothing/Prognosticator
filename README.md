@@ -66,3 +66,12 @@ npm run server
 # Now you can view it in your browser
 # http://localhost:port
 ```
+
+## TODO
+
+- [ ] Add sorting / pagination / filtering to queries
+- [ ] Add ability to create forecasts on a question
+- [ ] Add better error messages for Create Question / Forecast
+- [ ] Add statistics for forecasts from the forecast group
+- [ ] Add charts / graphs for forecasts over time
+- [ ] Implement hot reloading with Parcel (https://github.com/justinwoo/halogen-parcel-hot-reload-demo)

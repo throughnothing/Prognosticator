@@ -153,8 +153,6 @@ runQuery r u = case _ of
     let unwrapped = xs <#> \(ForecastOutcomeNT x) -> x 
         newForecast = Tuple f unwrapped
     q <- r.getQuestion f.question_id
-    -- | TODO: Ensure there is a FO for each PO
-    -- | AND that sum(FO.probabality) = 100
     case (validateNewForecast q newForecast) of
       Left e -> throwError $ error $ "Invalid forecast sent: " <> e
       Right (Tuple forecast fos) -> pure (write {})
@@ -162,7 +160,7 @@ runQuery r u = case _ of
     let unwrapped = xs <#> \(PossibleOutcomeNT x) -> x 
     in
       -- | TODO: Only doing this if/the/else b/c NonEmptyArray
-      -- | was not immediately easy to encode/decode in t he Query type
+      -- | was not immediately easy to encode/decode in the Query type
       -- | So using an Array, and manually checking length here
       if length unwrapped > 0
       then write <$> (r.createQuestion q unwrapped)

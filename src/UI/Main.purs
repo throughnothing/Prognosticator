@@ -2,9 +2,14 @@ module UI.Main where
 
 import Prelude
 
+import API.Query (Query(..))
+import API.Request (mkRequestURL)
+import Data.Either (hush)
+import Data.Log as Log
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
+import Effect.Ref (new)
 import Halogen as H
 import Halogen.Aff as HA
 import Halogen.HTML as HH
@@ -12,7 +17,6 @@ import Halogen.VDom.Driver (runUI)
 import Routing.PushState as PS
 import UI.AppM as AppM
 import UI.Component.Router as Router
-import Data.Log as Log
 
 main :: Effect Unit
 main = HA.runHalogenAff do
@@ -22,10 +26,14 @@ main = HA.runHalogenAff do
   -- Get current URL Path
   currentRoute <- liftEffect $ Router.getCurrentRoute
 
+
+  maybeMe <- hush <$> (mkRequestURL "/query" GetMe)
+  currentUser <- liftEffect $ new maybeMe
+
   let
     queryURL = "/query"
     logLevel = Log.Dev
-    env = { queryURL, logLevel, pushStateInterface }
+    env = { queryURL, logLevel, pushStateInterface, currentUser }
 
     rootComponent :: H.Component HH.HTML Router.Query Router.Input Void Aff
     rootComponent = H.hoist (AppM.runAppM env) Router.component

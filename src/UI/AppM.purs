@@ -7,12 +7,13 @@ import API.Request as R
 import Control.Monad.Error.Class (class MonadError, class MonadThrow)
 import Control.Monad.Reader (class MonadAsk, ReaderT, ask, asks, runReaderT)
 import Data.DateTimeW (DateTimeW(..))
+import Data.Maybe (Maybe)
 import Effect.Aff (Aff, Error)
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
 import Effect.Console as Console
-import Data.JSDate as JD
-import Repository.Types (PossibleOutcomeNT(..))
+import Effect.Ref (Ref, read)
+import Repository.Types (PossibleOutcomeNT(..), DBUser)
 import Routing.PushState as PS
 import Simple.JSON (write)
 import Type.Equality (class TypeEquals, from)
@@ -28,6 +29,7 @@ type Env =
   { queryURL :: String
   , logLevel :: Log.LogLevel
   , pushStateInterface :: PS.PushStateInterface
+  , currentUser :: Ref (Maybe DBUser)
   }
 
 newtype AppM a = AppM (ReaderT Env Aff a)

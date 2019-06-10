@@ -26,6 +26,18 @@ mkRequest
   -> m (Either String a)
 mkRequest query = do
   { queryURL } <- ask
+  mkRequestURL queryURL query
+
+
+-- | TODO: Make a better "Error" type than String
+mkRequestURL
+  :: forall m a
+   . MonadAff m
+  => ReadForeign a
+  => String
+  -> Query
+  -> m (Either String a)
+mkRequestURL queryURL query = do
   response <- liftAff $
     AX.post ResponseFormat.json queryURL
     (RequestBody.json $ unsafeCoerce $ encode query)

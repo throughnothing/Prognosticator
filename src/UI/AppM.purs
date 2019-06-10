@@ -4,10 +4,19 @@ import Prelude
 
 import API.Query as Q
 import API.Request as R
+import Capability.LogMessages (class LogMessages)
+import Capability.Navigate (class Navigate, navigateWithState)
+import Capability.Now (class Now)
+import Capability.Resource.Question (class ManageQuestion)
+import Capability.Resource.User (class ManageUser)
+import Capability.Session (class ManageSession)
 import Control.Monad.Error.Class (class MonadError, class MonadThrow)
 import Control.Monad.Reader (class MonadAsk, ReaderT, ask, asks, runReaderT)
 import Data.DateTimeW (DateTimeW(..))
+import Data.JSDate as JD
+import Data.Log as Log
 import Data.Maybe (Maybe)
+import Data.Route (routePath)
 import Effect.Aff (Aff, Error)
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
@@ -17,13 +26,6 @@ import Repository.Types (PossibleOutcomeNT(..), DBUser)
 import Routing.PushState as PS
 import Simple.JSON (write)
 import Type.Equality (class TypeEquals, from)
-import Capability.Now (class Now)
-import Capability.LogMessages (class LogMessages)
-import Capability.Navigate (class Navigate, navigateWithState)
-import Capability.Resource.Question (class ManageQuestion)
-import Capability.Resource.User (class ManageUser)
-import Data.Log as Log
-import Data.Route (routePath)
 
 type Env =
   { queryURL :: String
@@ -77,6 +79,11 @@ instance manageQuestionAppM :: ManageQuestion AppM where
   createQuestion q pos = R.mkRequest $ Q.CreateQuestion q (PossibleOutcomeNT <$> pos)
   getQuestion  = R.mkRequest <<< Q.GetQuestion
   getQuestions = R.mkRequest Q.GetQuestions
+
+instance manageSessionAppM :: ManageSession AppM where
+  getCurrentUser = do
+    { currentUser } <- ask
+    liftEffect $ read currentUser 
 
 -- | TODO:
 -- instance manageForecastAppM :: ManageForecast AppM where

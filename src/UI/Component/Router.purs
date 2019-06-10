@@ -6,8 +6,7 @@ import Capability.LogMessages (class LogMessages)
 import Capability.Navigate (class Navigate, navigate)
 import Capability.Now (class Now)
 import Capability.Resource.Question (class ManageQuestion)
-import Capability.Resource.User (class ManageUser, getMe)
-import Data.Either (Either(..))
+import Capability.Session (class ManageSession, getCurrentUser)
 import Data.Maybe (Maybe(..))
 import Data.Route as R
 import Data.Symbol (SProxy(..))
@@ -61,7 +60,7 @@ component :: forall o m
   => Monad m
   => LogMessages m
   => Now m
-  => ManageUser m
+  => ManageSession m
   => ManageQuestion m
   => H.Component HH.HTML Query Input o m
 component =
@@ -105,9 +104,9 @@ component =
 
   handleAction :: Action -> H.HalogenM State Action ChildSlots o m Unit
   handleAction (EvalQuery q) = (handleQuery q) <#> const unit
-  handleAction GetMe = getMe >>= case _ of
-    Left err -> pure unit
-    Right me -> H.modify_ _ { me = Just me }
+  handleAction GetMe = getCurrentUser >>= case _ of
+    Nothing -> pure unit
+    me      -> H.modify_ _ { me = me }
 
   handleQuery :: ∀ a. Query a -> H.HalogenM State Action ChildSlots o m (Maybe a)
   handleQuery (NavigateRoute dest) = _handleQuery true dest

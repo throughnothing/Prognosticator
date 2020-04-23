@@ -49,9 +49,6 @@ login and authentication to work.
 #   - docker start prognosticator-pg
 db/local_docker.sh
 
-# Load the nix environment for the app
-nix-shell
-
 # Install npm deps, spago, and purescript deps
 make setup
 
@@ -61,7 +58,7 @@ make db-migrate-up
 # Run the server
 # This builds the client-side app.js
 # and then runs the local server
-npm run server
+make serve
 
 # Now you can view it in your browser
 # http://localhost:port

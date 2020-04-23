@@ -10,9 +10,12 @@ DBCONFIG=db/config.json
 MIGDIR=db/migrations
 
 setup:
-	npm install \
+	# TODO: Don't require installing purescript globally
+	# Currently spago looks for `purs` on the global path
+	# So we have to for now...
+	npm install -g purescript \
+	&& npm install \
 	&& ${SPAGO} install
-
 
 db-migrate-up:
 	${DBMIGRATE} --config ${DBCONFIG} --migrations-dir ${MIGDIR} up

@@ -3,13 +3,13 @@ module API.Request where
 import Prelude
 
 import API.Query (Query)
-import Affjax (printResponseFormatError)
 import Affjax as AX
 import Affjax.RequestBody as RequestBody
 import Affjax.ResponseFormat as ResponseFormat
 import Control.Monad.Reader (class MonadAsk, ask)
 import Data.Bifunctor (lmap)
 import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff, liftAff)
 import Foreign (unsafeToForeign)
 import Foreign.Class (encode)
@@ -40,7 +40,7 @@ mkRequestURL
 mkRequestURL queryURL query = do
   response <- liftAff $
     AX.post ResponseFormat.json queryURL
-    (RequestBody.json $ unsafeCoerce $ encode query)
-  case response.body of
-    Left e  -> pure $ Left $ printResponseFormatError e
-    Right b -> pure $ lmap show (read $ unsafeToForeign b)
+    (Just (RequestBody.json $ unsafeCoerce $ encode query))
+  case response of
+    Left e  -> pure $ Left $ AX.printError e
+    Right r -> pure $ lmap show (read $ unsafeToForeign r.body)

@@ -50,7 +50,7 @@ component =
         , HH.ul
           [ class_ "navbar-nav mr-auto" ]
           [ _navItem (Navigate R.Home) true (route == R.Home) "Home"
-          , _navItem (Navigate R.Questions) true (route == R.Questions) "Questions"
+          , _navItem (Navigate R.Questions) true (questionsActive route) "Questions"
           , _navItem (Navigate R.CreateQuestion) false false "Forecasts"
           ]
         , HH.img
@@ -61,6 +61,10 @@ component =
         ]
       ]
     ]
+    where
+      questionsActive (R.Questions) = true
+      questionsActive (R.Question _) = true
+      questionsActive _ = false
 
   _navItem :: ∀ i.  Action -> Boolean -> Boolean -> String -> HH.HTML i Action
   _navItem action enabled active name = HH.li

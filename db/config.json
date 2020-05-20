@@ -4,7 +4,8 @@
     "user": { "ENV" : "PGUSER" },
     "password": { "ENV" : "PGPASSWORD" },
     "host": { "ENV" : "PGHOST" },
-    "database": { "ENV" : "PGDATABASE" }
+    "database": { "ENV" : "PGDATABASE" },
+    "port": { "ENV" : "PGPORT" }
   },
 
   "prod": {
@@ -12,7 +13,8 @@
     "user": { "ENV" : "PGUSER" },
     "password": { "ENV" : "PGPASSWORD" },
     "host": { "ENV" : "PGHOST" },
-    "database": { "ENV" : "PGDATABASE" }
+    "database": { "ENV" : "PGDATABASE" },
+    "port": { "ENV" : "PGPORT" }
   }
 
 }

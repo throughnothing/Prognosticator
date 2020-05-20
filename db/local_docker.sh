@@ -3,8 +3,8 @@
 # pre-configured to be used with the "dev" db-migrate environment
 # https://hub.docker.com/_/postgres/
 
-docker run -p 5432:5432 \
-  --name prognosticator-pg \
+docker run -p $PGPORT:5432 \
+  --name $PGDATABASE \
   -e POSTGRES_USER=$PGUSER \
   -e POSTGRES_PASSWORD=$PGPASSWORD \
   -e POSTGRES_DB=$PGDATABASE \

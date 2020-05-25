@@ -12,5 +12,6 @@
 /.cache
 
 
+dist/
 /static/app.js
 docker_db.log

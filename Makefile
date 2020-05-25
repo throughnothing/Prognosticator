@@ -17,12 +17,6 @@ setup:
 	&& npm install \
 	&& ${SPAGO} install
 
-db-migrate-up:
-	${DBMIGRATE} --config ${DBCONFIG} --migrations-dir ${MIGDIR} up
-
-db-migrate-down:
-	${DBMIGRATE} --config ${DBCONFIG} --migrations-dir ${MIGDIR} down
-
 bundle: 
 	${SPAGO} bundle-app -m ${UI_MAIN} --to ${BUNDLE_LOCATION}
 

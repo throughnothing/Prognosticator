@@ -15,6 +15,7 @@ import Halogen.Aff as HA
 import Halogen.HTML as HH
 import Halogen.VDom.Driver (runUI)
 import Routing.PushState as PS
+import Simple.JSON (write)
 import UI.AppM as AppM
 import UI.Component.Router as Router
 
@@ -22,18 +23,27 @@ main :: Effect Unit
 main = HA.runHalogenAff do
 
   body <- HA.awaitBody
-  pushStateInterface <- liftEffect $ PS.makeInterface
-  -- Get current URL Path
-  currentRoute <- liftEffect $ Router.getCurrentRoute
-
 
   maybeMe <- hush <$> (mkRequestURL "/query" GetMe)
-  currentUser <- liftEffect $ new maybeMe
+
+  { pushStateI
+  , currentRoute
+  , currentUser
+  } <- liftEffect $ do
+    pushStateI <- PS.makeInterface
+    currentRoute <- Router.getCurrentRoute
+    currentUser <- new maybeMe
+    pure { pushStateI, currentRoute, currentUser}
 
   let
     queryURL = "/query"
     logLevel = Log.Dev
-    env = { queryURL, logLevel, pushStateInterface, currentUser }
+    env =
+      { queryURL
+      , logLevel
+      , currentUser
+      , pushState : pushStateI.pushState (write {})
+      }
 
     rootComponent :: H.Component HH.HTML Router.Query Router.Input Void Aff
     rootComponent = H.hoist (AppM.runAppM env) Router.component
@@ -42,4 +52,4 @@ main = HA.runHalogenAff do
 
   -- Listen for pushState changes, and update Router
   void $ liftEffect $
-    PS.locations (Router.routeSignal driver) pushStateInterface
+    PS.locations (Router.routeSignal driver) pushStateI

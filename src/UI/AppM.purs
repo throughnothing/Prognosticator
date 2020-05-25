@@ -5,7 +5,7 @@ import Prelude
 import API.Query as Q
 import API.Request as R
 import Capability.LogMessages (class LogMessages)
-import Capability.Navigate (class Navigate, navigateWithState)
+import Capability.Navigate (class Navigate)
 import Capability.Now (class Now)
 import Capability.Resource.Question (class ManageQuestion)
 import Capability.Resource.User (class ManageUser)
@@ -17,6 +17,7 @@ import Data.JSDate as JD
 import Data.Log as Log
 import Data.Maybe (Maybe)
 import Data.Route (routePath)
+import Effect (Effect)
 import Effect.Aff (Aff, Error)
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
@@ -30,7 +31,7 @@ import Type.Equality (class TypeEquals, from)
 type Env =
   { queryURL :: String
   , logLevel :: Log.LogLevel
-  , pushStateInterface :: PS.PushStateInterface
+  , pushState :: String -> Effect Unit
   , currentUser :: Ref (Maybe DBUser)
   }
 
@@ -65,10 +66,9 @@ instance nowAppM :: Now AppM where
 
 
 instance navigateAppM :: Navigate AppM where
-  navigate r = navigateWithState (write {}) r
-  navigateWithState state route = do
-    { pushStateInterface } <- ask
-    liftEffect $ pushStateInterface.pushState state $ routePath route
+  navigate route = do
+    { pushState } <- ask
+    liftEffect $ pushState $ routePath route
 
 instance manageUserAppM :: ManageUser AppM where
   getMe = R.mkRequest Q.GetMe

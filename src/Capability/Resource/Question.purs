@@ -11,7 +11,7 @@ class Monad m <= ManageQuestion m where
   getQuestion :: Int -> m (Either String DBQuestionFull)
   getQuestions :: m (Either String (Array DBQuestionFull))
 
-instance manageUserHalogenM :: ManageQuestion m => ManageQuestion (HalogenM s a c o m) where
+instance manageQuestionHalogenM :: ManageQuestion m => ManageQuestion (HalogenM s a c o m) where
   createQuestion q = lift <<< createQuestion q
   getQuestion = lift <<< getQuestion
   getQuestions = lift getQuestions

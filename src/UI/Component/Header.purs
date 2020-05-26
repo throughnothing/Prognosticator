@@ -2,7 +2,7 @@ module UI.Component.Header where
 
 import Prelude
 
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -12,7 +12,7 @@ import Capability.Navigate (class Navigate, navigate)
 import UI.Component.HTML.Util (class_, voidHref)
 import Data.Route as R
 
-type State = { route :: R.Route, me :: Maybe DBUser }
+type State = { route :: R.Route, me :: DBUser }
 
 type Slot p = ∀ q. H.Slot q Void p
 
@@ -20,7 +20,7 @@ data Action
   = Navigate R.Route
   | Update State
 
-type Input = { route :: R.Route, me :: Maybe DBUser }
+type Input = { route :: R.Route, me :: DBUser }
 
 component :: forall q o m. Navigate m =>  H.Component HH.HTML q Input o m
 component =
@@ -49,12 +49,12 @@ component =
           [ HH.text "Prognosticator" ]
         , HH.ul
           [ class_ "navbar-nav mr-auto" ]
-          [ _navItem (Navigate R.Home) true (route == R.Home) "Home"
-          , _navItem (Navigate R.Questions) true (questionsActive route) "Questions"
-          , _navItem (Navigate R.CreateQuestion) false false "Forecasts"
+          [ _navItem (R.CreateQuestion) true (route == R.CreateQuestion) "Ask"
+          -- , _navItem (R.Questions) true (questionsActive route) "Questions"
+          -- , _navItem (R.CreateQuestion) false false "Forecasts"
           ]
         , HH.img
-          [ HP.src $ fromMaybe "/images/person.svg" $ _.picture <$> me
+          [ HP.src $ me.picture
           , class_ "rounded-circle shadow-lg border border-light"
           , HP.height 40 , HP.width 40
           ]
@@ -66,14 +66,14 @@ component =
       questionsActive (R.Question _) = true
       questionsActive _ = false
 
-  _navItem :: ∀ i.  Action -> Boolean -> Boolean -> String -> HH.HTML i Action
-  _navItem action enabled active name = HH.li
+  _navItem :: ∀ i.  R.Route -> Boolean -> Boolean -> String -> HH.HTML i Action
+  _navItem route enabled active name = HH.li
     [ class_ "nav-item"]
     [ HH.a
       [ class_ $ "nav-link"
           <> (if active then " active" else "")
           <> (if not enabled then " disabled" else "")
-      , HE.onClick $ \_ -> Just action
+      , HE.onClick $ \_ -> Just $ Navigate route
       , voidHref
       ]
       [ HH.text name ]

@@ -18,6 +18,7 @@ class Monad m <= ExpressRes m where
   send :: ∀ a. a -> m Unit
   sendFile :: String -> m Unit
   redirect :: String -> m Unit
+  setStatus :: Int -> m Unit
 
 class Monad m <= ExpressH m where
   next :: m Unit
@@ -31,6 +32,7 @@ instance handlerMExpressRes :: ExpressRes (EH.HandlerM) where
   send = ERes.send
   sendFile = ERes.sendFile
   redirect = ERes.redirect
+  setStatus = ERes.setStatus
 
 instance handlerMExpressH :: ExpressH (EH.HandlerM) where
   next = EH.next

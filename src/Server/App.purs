@@ -28,20 +28,18 @@ import Server.Repository.Validate (validateNewForecast)
 import Simple.JSON (read, write)
 
 data ServerRoutes
-  = Login
+  = Root
   | GoogleAuth
   | GoogleCb
   | AppJS
-  | Root
   | Query
   | Else
 
 routeStr :: ServerRoutes -> String
-routeStr Login = "/login"
+routeStr Root = "/"
 routeStr GoogleAuth = "/auth/google"
 routeStr GoogleCb = "/auth/google/callback"
 routeStr AppJS = "/app.js"
-routeStr Root = "/"
 routeStr Query = "/query"
 routeStr Else = "*"
 
@@ -64,6 +62,8 @@ app repo c = do
   -- | Enforce auth on all routes but login ones
   use authEnforcer
 
+
+
   -- | Google Auth Route Handlers
   get (routeStr GoogleAuth) $
       E.passportAuthenticateHandler p
@@ -77,10 +77,7 @@ app repo c = do
   -- | Route for querying data (API route)
   post (routeStr Query) $ queryHandler repo
   get (routeStr AppJS) $ CE.sendFile "static/app.js"
-  get (routeStr Login) $ CE.sendFile "static/login.html"
-  -- | All routes serve index.html for pushstate goodness
   get (routeStr Else) $ CE.sendFile "static/index.html"
-
 
 -- | Handle queries.  This is effectively the API.
 queryHandler :: ∀ m
@@ -105,11 +102,15 @@ authEnforcer :: ∀ m
 authEnforcer = do
   reqPath <- CE.getPath
   mUser <- CE.getField "user"
-  if isJust mUser || elem reqPath allowedPaths
+  if isJust mUser || reqPath `elem` allowedPaths
     then CE.next
-    else CE.redirect $ routeStr Login
+    else CE.setStatus 401 *> CE.send "401 Unauthorized"
   where
-    allowedPaths = [routeStr GoogleAuth, routeStr GoogleCb, routeStr Login]
+    allowedPaths =
+      [routeStr GoogleAuth
+      , routeStr GoogleCb
+      , routeStr Root
+      , routeStr AppJS]
 
 -- | Helper to get the DBUser from the session in a route
 getUser :: ∀ m

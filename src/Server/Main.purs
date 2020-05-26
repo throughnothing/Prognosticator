@@ -18,8 +18,9 @@ main = launchAff_ do
     Nothing -> logError
     Just conf -> do
       repo <- PG.mkRepository conf.db
-      liftEffect $ run repo conf
+      _ <- liftEffect $ run repo conf
+      pure unit
 
   where
-    run r c = serve c.port (app r c) *> pure unit
+    run r c = serve c.port (app r c)
     logError = log "Loading config from environment failed! Terminating."

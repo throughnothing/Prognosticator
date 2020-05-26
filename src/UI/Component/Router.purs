@@ -20,6 +20,7 @@ import UI.Component.HTML.Util (class_)
 import UI.Component.Header as Header
 import UI.Page.CreateQuestion as CreateQuestion
 import UI.Page.Home as Home
+import UI.Page.Login as Login
 import UI.Page.Page404 as P404
 import UI.Page.Question as Question
 import UI.Page.Questions as Questions
@@ -41,6 +42,7 @@ type Input = R.Route
 
 type ChildSlots =
   ( header :: Header.Slot Unit
+  , login :: Login.Slot Unit
   , home :: Home.Slot Unit
   , createQuestion :: CreateQuestion.Slot Unit
   , question :: Question.Slot Unit
@@ -49,6 +51,7 @@ type ChildSlots =
   )
 
 _header = SProxy :: SProxy "header"
+_login = SProxy :: SProxy "login"
 _home = SProxy :: SProxy "home"
 _createQuestion = SProxy :: SProxy "createQuestion"
 _question = SProxy :: SProxy "question"
@@ -76,31 +79,29 @@ component =
   where
 
   render :: State -> H.ComponentHTML Action ChildSlots m
-  render { route, me } = HH.div_
-    [ HH.slot _header unit Header.component { route, me } absurd
-    , HH.div
-      [ class_ "container pt-3" ]
-      [ case me, route of
-          _, R.Home      ->
-            HH.slot _home unit Home.component unit absurd
+  render { route, me } =
+    case me of
+      Nothing -> HH.slot _login unit Login.component unit absurd
+      Just user -> HH.div_
+        [ HH.slot _header unit Header.component { route, me: user } absurd
+        , HH.div
+          [ class_ "container pt-3" ]
+          [ case route of
+              -- R.Home -> HH.slot _home unit Home.component unit absurd
+              R.Home -> HH.slot _question unit Questions.component { questions: Nothing } absurd
 
-          Just u, R.CreateQuestion ->
-            HH.slot _createQuestion unit
-              CreateQuestion.component u absurd
-          _, R.CreateQuestion -> 
-            -- | TODO: Make this screen nicer
-            HH.text "Please Login!"
+              R.CreateQuestion ->
+                HH.slot _createQuestion unit CreateQuestion.component user absurd
 
-          _, (R.Question id) -> HH.slot _question unit
-              Question.component id absurd
+              (R.Question id) ->
+                HH.slot _question unit Question.component id absurd
 
-          _, R.Questions -> HH.slot _questions unit
-              Questions.component { questions: Nothing } absurd
+              R.Questions ->
+                HH.slot _questions unit Questions.component { questions: Nothing } absurd
 
-          _, R.NotFound  ->
-            HH.slot _page404 unit P404.component unit absurd
-      ]
-    ]
+              _ -> HH.slot _page404 unit P404.component unit absurd
+          ]
+        ]
 
   handleAction :: Action -> H.HalogenM State Action ChildSlots o m Unit
   handleAction (EvalQuery q) = (handleQuery q) <#> const unit

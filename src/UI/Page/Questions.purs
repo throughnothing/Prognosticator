@@ -11,9 +11,8 @@ import Data.Route as R
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
-import Halogen.HTML.Properties as HP
 import Repository.Types (DBQuestionFull)
-import UI.Component.HTML.Util (class_)
+import UI.Component.HTML.Util (class_, voidHref)
 
 type State =
   { questions :: Maybe (Array DBQuestionFull)
@@ -58,7 +57,7 @@ component =
         [ HH.div [ class_ "card-body" ]
           [ HH.h5 [ class_ "card-title" ] 
             [ HH.a
-              [ HP.href "javascript:void(0);"
+              [ voidHref
               , HE.onClick \_ -> Just $ GoToQuestion q.question.id
               ]
               [ HH.text q.question.text ]

@@ -24,8 +24,6 @@ import Effect.Class (class MonadEffect, liftEffect)
 import Effect.Console as Console
 import Effect.Ref (Ref, read)
 import Repository.Types (PossibleOutcomeNT(..), DBUser)
-import Routing.PushState as PS
-import Simple.JSON (write)
 import Type.Equality (class TypeEquals, from)
 
 type Env =
@@ -64,7 +62,6 @@ instance logMessagesAppM :: LogMessages AppM where
 instance nowAppM :: Now AppM where
   now = liftEffect $ JD.now <#> DateTimeW
 
-
 instance navigateAppM :: Navigate AppM where
   navigate route = do
     { pushState } <- ask
@@ -72,8 +69,6 @@ instance navigateAppM :: Navigate AppM where
 
 instance manageUserAppM :: ManageUser AppM where
   getMe = R.mkRequest Q.GetMe
-  getUser = R.mkRequest <<< Q.GetUser
-  getUsers = R.mkRequest Q.GetUsers
 
 instance manageQuestionAppM :: ManageQuestion AppM where
   createQuestion q pos = R.mkRequest $ Q.CreateQuestion q (PossibleOutcomeNT <$> pos)

@@ -1,4 +1,4 @@
-module Server.Repository.Validate where
+module Repository.Validate where
 
 import Prelude
 

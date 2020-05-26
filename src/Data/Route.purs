@@ -15,6 +15,7 @@ data Route
   | Questions
   | CreateQuestion
   | Question Int
+  | Login
   -- | User Int
   | NotFound
 
@@ -25,6 +26,7 @@ instance showRoute :: Show Route where show = genericShow
 
 routePath :: Route -> String
 routePath Home = "/"
+routePath Login = "/login"
 routePath Questions = "/questions"
 routePath (Question i) = "/questions/" <> (show i)
 routePath CreateQuestion = "/questions/new"
@@ -36,6 +38,7 @@ parseRoute = fromMaybe NotFound <<< hush <<< R.match match
 match :: M.Match Route
 match = M.root *> oneOf 
     [ Home <$ M.end
+    , Login <$ (M.lit "login" <* M.end)
     , Question <$> (M.lit "questions" *> M.int <* M.end)
     , Questions <$ (M.lit "questions" <* M.end)
     , CreateQuestion <$ (M.lit "questions" <* M.lit "new" <* M.end)

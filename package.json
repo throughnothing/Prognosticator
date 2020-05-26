@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Predict the future™",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "firebase": "^7.14.5",
+    "firebaseui": "^4.5.0"
+  },
   "devDependencies": {
     "parcel": "^1.12.4",
     "purescript": "^0.13.8",

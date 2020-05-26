@@ -66,9 +66,8 @@ make serve
 
 ## TODO
 
-- [ ] Add sorting / pagination / filtering to queries
+- [ ] Move to Firestore (from Postgres)
 - [ ] Add ability to create forecasts on a question
+- [ ] Use Routing Duplex (https://github.com/natefaubion/purescript-routing-duplex)
 - [ ] Add better error messages for Create Question / Forecast
-- [ ] Add statistics for forecasts from the forecast group
-- [ ] Add charts / graphs for forecasts over time
-- [ ] Implement hot reloading with Parcel (https://github.com/justinwoo/halogen-parcel-hot-reload-demo)
+- [ ] Add sorting / pagination / filtering to queries

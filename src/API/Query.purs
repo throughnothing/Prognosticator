@@ -11,8 +11,6 @@ import Repository.Types (Forecast, PossibleOutcomeNT, Question, ForecastOutcomeN
 -- | data type which representss all possibly queries
 data Query
   = GetMe
-  | GetUser GetUserFilter
-  | GetUsers
   | CreateQuestion Question (Array PossibleOutcomeNT)
   | GetQuestion Int
   | GetQuestions

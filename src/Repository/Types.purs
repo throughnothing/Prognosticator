@@ -2,24 +2,32 @@ module Repository.Types where
 
 import Prelude
 
+import Affjax.RequestBody (RequestBody(..))
 import Data.DateTimeW (DateTimeW)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Foreign.Class (class Decode, class Encode)
 import Foreign.Generic (defaultOptions, genericDecode, genericEncode)
 
+type FirebaseUser =
+  { uid :: String
+  , email :: String
+  , displayName :: String
+  , photoUrl :: String
+  }
+
 type WithId r = ( id :: Int | r )
 type WithCreatedAt r = ( created_at :: DateTimeW | r )
 type DB r = { | (WithId (WithCreatedAt r)) }
 
-type DBUser = DB UserRows
+type DBUser = { | (WithId UserRows) }
 type User = { | UserRows }
-type UserRows = 
-  ( google_id :: String
-  , name :: String
-  , email :: String
-  , picture :: String
-  )
+type UserRows =  ()
+  -- ( google_id :: String
+  -- , name :: String
+  -- , email :: String
+  -- , picture :: String
+  -- )
 
 type DBQuestion = DB (QuestionRows)
 type Question = { | QuestionRows }

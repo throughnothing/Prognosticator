@@ -66,7 +66,7 @@ component =
           , HH.p [ class_ "card-text" ]
             [ HH.text q.question.description ]
           , HH.p [ class_ "card-text" ]
-            [ HH.text $ q.user.name <> " -- " <> (forDisplay q.question.ends_at)]
+            [ HH.text $ (show q.user.id) <> " -- " <> (forDisplay q.question.ends_at)]
           ]
         ]
 

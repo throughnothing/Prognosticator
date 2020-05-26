@@ -3,7 +3,6 @@ SPAGO=./node_modules/.bin/spago
 DBMIGRATE=./node_modules/.bin/db-migrate
 PARCEL=./node_modules/.bin/parcel
 UI_MAIN=UI.Main
-SERVER_MAIN=Server.Main
 BUNDLE_LOCATION=static/app.js
 BUNDLE_DIR=static
 DBCONFIG=db/config.json
@@ -31,7 +30,7 @@ build:
 	${SPAGO} build
 
 serve: bundle
-	${SPAGO} run -m ${SERVER_MAIN} 
+	${PARCEL} static/index.html
 
 repl:
 	${SPAGO} repl

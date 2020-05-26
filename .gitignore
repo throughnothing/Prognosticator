@@ -1,3 +1,4 @@
+*.DS_Store
 /bower_components/
 /node_modules/
 /.pulp-cache/
@@ -10,6 +11,7 @@
 /.spago*
 /.env
 /.cache
+dist/
 
 
 /static/app.js

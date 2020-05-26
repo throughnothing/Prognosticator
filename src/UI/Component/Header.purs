@@ -42,8 +42,7 @@ component =
         [ class_ "container" ]
         [ HH.a
           [ class_ "navbar-brand"
-          , voidHref
-          , HE.onClick $ _go R.Home 
+          , HE.onClick $ _go R.Home
           , voidHref
           ]
           [ HH.text "Prognosticator" ]
@@ -84,4 +83,4 @@ component =
   handleAction (Update r)   = void $ H.modify $ const r
 
   _go :: ∀ a. R.Route -> (a -> Maybe Action)
-  _go r = const $ Just <<< Navigate $ r
+  _go r = const $ Just $ Navigate r

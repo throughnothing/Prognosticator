@@ -87,13 +87,12 @@ component =
         , HH.div
           [ class_ "container pt-3" ]
           [ case route of
-              -- R.Home -> HH.slot _home unit Home.component unit absurd
-              R.Home -> HH.slot _question unit Questions.component { questions: Nothing } absurd
+              R.Home -> HH.slot _home unit Home.component unit absurd
 
               R.CreateQuestion ->
                 HH.slot _createQuestion unit CreateQuestion.component user absurd
 
-              (R.Question id) ->
+              R.Question id ->
                 HH.slot _question unit Question.component id absurd
 
               R.Questions ->
